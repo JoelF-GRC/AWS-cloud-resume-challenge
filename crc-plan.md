@@ -52,12 +52,13 @@ The goal of this project is to deploy my resume as a **static website on AWS**, 
 - `crc-plan.md` with completed project plan, services table, security notes
 - Initial **architecture diagram** saved in `diagrams/architecture.png`
 - GitHub repo created with proper folder structure:
-cloud-resume-challenge/
-├─ README.md
-├─ crc-plan.md
-├─ resume-site/
-├─ infrastructure/
-└─ diagrams/
+-
+`cloud-resume-challenge/
+``├─ README.md
+``├─ crc-plan.md
+``├─ resume-site/
+``├─ infrastructure/
+``└─ diagrams/
 
 ---
 
