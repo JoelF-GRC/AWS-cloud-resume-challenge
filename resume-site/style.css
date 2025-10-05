@@ -54,6 +54,12 @@ body {
   line-height: 1.2;
   letter-spacing: 0.2px;
 }
+.name .certs {
+  font-weight: 400;          /* normal weight */
+  font-size: 0.7em;          /* slightly smaller */
+  color: var(--muted);       /* softer color */
+}
+
 .nowrap { white-space: nowrap; }
 
 .contact {
@@ -164,4 +170,15 @@ body {
 @media (max-width: 600px) {
   .role { padding: 0.85rem; }
   .tagline { max-width: none; }
+}
+.chip {
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.chip:hover,
+.chip:focus {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  transform: translateY(-2px);
 }
