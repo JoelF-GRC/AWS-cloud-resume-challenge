@@ -60,7 +60,7 @@ This document outlines the plan and progress for my **AWS Cloud Resume Challenge
 
 ## Notes
 
-- The project is designed to remain within the **AWS Free Tier** using S3, CloudFront, Lambda, DynamoDB, and API Gateway.  
+- The project is designed to remain within the AWS Free Tier using S3, CloudFront, Lambda, DynamoDB, and API Gateway. Some additional service may incur nominal costs, like Route 53 DNS routing. 
 - Each service is configured with **encryption, logging, and least-privilege IAM roles** for security and compliance.
 
 ---
