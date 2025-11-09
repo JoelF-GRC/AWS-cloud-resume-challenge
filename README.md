@@ -33,8 +33,7 @@ The project follows a standard CRC architecture using AWS managed services:
 | CI/CD | **GitHub Actions** | Automate deployment to S3 and CloudFront invalidation |
 
 All services are configured with encryption, logging, and least-privilege IAM policies.  
-The entire deployment stays well within AWS Free Tier limits.
-
+The entire deployment aims to stay within AWS Free Tier and inexpensive services, with some nominal charges for services like Route 53 DNS routing.
 ---
 
 ## Repository Structure
@@ -105,7 +104,7 @@ This project treats security as a design requirement, not an afterthought.
 - CloudTrail and CloudWatch log key activity.  
 - CI/CD process maintains version control and traceability.
 
-These practices map naturally to frameworks like **ISO 27001**, **SOC 2**, and **NIST CSF**, and reflect the same controls I apply in my professional work.
+These practices map naturally to frameworks like **ISO 27001** and **NIST CSF**, and reflect the same controls I apply in my professional work.
 
 ---
 
