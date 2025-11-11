@@ -1,6 +1,6 @@
 # AWS Cloud Resume Challenge – Art & Professional Portfolio
 
-This project is my implementation of the **AWS Cloud Resume Challenge**, adapted into a personal website that combines an art portfolio** with a professional resume page.  
+This project is my implementation of the **AWS Cloud Resume Challenge**, adapted into a personal website that combines an art portfolio with a professional resume page.  
 The goal is to demonstrate end-to-end use of AWS cloud services while creating something personal, creative, and technically sound.
 
 ---
@@ -23,6 +23,8 @@ The site consists of:
 
 The project follows a standard CRC architecture using AWS managed services:
 
+![AWS Cloud Resume Challenge Architecture](diagrams/architecture.png)
+
 | Layer | AWS Service | Purpose |
 |--------|--------------|----------|
 | Frontend | **S3** | Host static HTML, CSS, and image assets |
@@ -32,8 +34,9 @@ The project follows a standard CRC architecture using AWS managed services:
 | Access & Logging | **IAM, CloudWatch, CloudTrail** | Security, monitoring, and auditing |
 | CI/CD | **GitHub Actions** | Automate deployment to S3 and CloudFront invalidation |
 
--All services are configured with encryption, logging, and least-privilege IAM policies.  
--The entire deployment aims to stay within AWS Free Tier and inexpensive services, with some nominal charges for services like Route 53 DNS routing.
+All services are configured with encryption, logging, and least-privilege IAM policies.  
+The entire deployment aims to stay within AWS Free Tier and inexpensive services, with some nominal charges for services like Route 53 DNS routing.
+
 ---
 
 ## Repository Structure
