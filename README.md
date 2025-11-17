@@ -51,8 +51,7 @@ cloud-resume-challenge/
 │   └── visitor-counter.yml
 ├── resume-site/              # Static website
 │   ├── robots.txt
-│   ├── index.html
-│   ├── index.html
+│   ├── sitemap.xml
 │   ├── about.html
 │   ├── 1990s.html
 │   ├── 2000s.html
