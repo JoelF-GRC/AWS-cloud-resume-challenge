@@ -103,9 +103,28 @@ This project treats security as a design requirement, not an afterthought.
 
 - S3 and DynamoDB encrypted by default.  
 - IAM roles restricted to least privilege.  
-- CloudFront serves content via HTTPS only.  
+- CloudFront serves content via HTTPS only, as well as security response headers
 - CloudTrail and CloudWatch log key activity.  
 - CI/CD process maintains version control and traceability.
+ 
+## Challenges Along the Way
+
+### Security headers breaking the site
+Once the site was live, I started tightening the CloudFront security headers (CSP, HSTS, Permissions-Policy, etc.). Everything had been working, but the hardening process immediately surfaced some issues:
+
+- The **hamburger menu and footer script stopped working** because my CSP was blocking inline JavaScript.
+- **Google Fonts** failed to load due to missing `style-src` and `font-src` allowances.
+- The **image lightbox** broke on certain devices because `blob:` wasn’t permitted under `img-src`.
+- A strict **Permissions-Policy** interfered with fullscreen behavior.
+
+To fix this, I re-balanced the security settings so they stayed strong but didn’t block normal site behavior. That meant adjusting the CSP to allow the specific resources I actually use, adding support for Google Fonts, and cleaning up the Permissions-Policy. I also updated a couple of HTML/JS pieces so they would work properly under the more restrictive rules.
+
+### Geo-blocking blocked external scanners
+Another issue I ran into was with my CloudFront geo restrictions. I had intentionally limited the allowed countries, but this ended up blocking tools that test and grade security headers. For example, **securityheaders.com scans from Ireland**, so the test wouldn’t reach my site at all. I had to add Ireland to my small allowlist so the scanner could actually review my headers.
+
+Overall, these were good reminders that security controls and application behavior have to align — and sometimes the tools you rely on for validation have their own requirements.
+
+
 
 These practices map naturally to frameworks like **ISO 27001** and **NIST**, and reflect the same controls I apply in my professional work.
 
