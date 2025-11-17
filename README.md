@@ -50,6 +50,8 @@ cloud-resume-challenge/
 ├── infrastructure/           # IaC templates for backend services
 │   └── visitor-counter.yml
 ├── resume-site/              # Static website
+│   ├── robots.txt
+│   ├── index.html
 │   ├── index.html
 │   ├── about.html
 │   ├── 1990s.html
@@ -58,9 +60,13 @@ cloud-resume-challenge/
 │   ├── 2020s.html
 │   ├── digital-media.html
 │   ├── professional.html
+│   ├── favicon-16.png
+│   ├── favicon-32.png
+│   ├── favicon.ico
 │   └── assets/
 │       ├── css/style.css
 │       └── images/
+│       └── js/main.js
 └── docs/
     └── site-implementation.md  # CRC requirements and validation notes
 ```
