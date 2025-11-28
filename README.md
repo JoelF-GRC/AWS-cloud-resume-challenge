@@ -1,15 +1,14 @@
 # AWS Cloud Resume Challenge – Art & Professional Portfolio
 
 This project is my implementation of the **AWS Cloud Resume Challenge**, adapted into a personal website that combines an art portfolio with a professional resume page.  
-The goal is to demonstrate end-to-end use of AWS cloud services while creating something personal, creative, and technically sound.
+The goal is to demonstrate end-to-end use of AWS cloud services while creating something personal, creative, technically sound, and security-minded.
 
 ---
 
 ## Overview
 
 I’m building a responsive, static website hosted entirely in the AWS ecosystem.  
-It highlights my artwork across multiple decades and includes a dedicated page for my professional background in **security, governance, risk, and compliance (GRC)**.
-
+It highlights my artwork across multiple decades and includes a dedicated page for my professional background in **security, governance, risk, and compliance (GRC)**. 
 The site consists of:
 - **Art portfolio pages** organized by decade (1990s–2020s) and medium.
 - A **Professional** page that includes my resume and links to LinkedIn and GitHub.
@@ -26,15 +25,15 @@ The project follows a standard CRC architecture using AWS managed services:
 
 ![AWS Cloud Resume Challenge Architecture](diagrams/architecture.png)
 
-| Layer | AWS Service | Purpose |
-|--------|--------------|----------|
-| DNS | **Route 53** | Route traffic from endpoint to CloudFront |
-| Frontend | **S3** | Host static HTML, CSS, and image assets |
-| Delivery | **CloudFront** | Provide HTTPS, global distribution, and caching |
-| Backend | **API Gateway + Lambda** | Handle visitor counter logic |
-| Database | **DynamoDB** | Store visitor count data |
-| Access & Logging | **IAM, CloudWatch, CloudTrail** | Security, monitoring, and auditing |
-| CI/CD | **GitHub Actions** | Automate deployment to S3 and CloudFront invalidation |
+| Layer            | AWS Service                        | Purpose                                               |
+| ---------------- | ---------------------------------- | ----------------------------------------------------- |
+| DNS              | **Route 53**                       | Route traffic from endpoint to CloudFront             |
+| Frontend         | **S3**                             | Host static HTML, CSS, and image assets               |
+| Delivery         | **CloudFront**                     | Provide HTTPS, global distribution, and caching       |
+| Backend          | **API Gateway + Lambda**           | Handle visitor counter logic                          |
+| Database         | **DynamoDB**                       | Store visitor count data                              |
+| Access & Logging | **IAM, CloudWatch, CloudTrail**    | Security, monitoring, and auditing                    |
+| CI/CD            | **GitHub Actions** (future action) | Automate deployment to S3 and CloudFront invalidation |
 
 All services are configured with encryption, logging, and least-privilege IAM policies.  
 The entire deployment aims to stay within AWS Free Tier and inexpensive services, with some nominal charges for services like Route 53 DNS routing.
@@ -52,7 +51,7 @@ cloud-resume-challenge/
 ├── infrastructure/           # IaC templates for backend services
 │   └── visitor-counter.yml
 ├── resume-site/              # Static website
-│   ├── robots.txt			  # Block "/images/" folder from search engines	
+│   ├── robots.txt			  # Block "/images/" from search engines	
 │   ├── sitemap.xml
 │   ├── about.html
 │   ├── 1990s.html
@@ -114,7 +113,8 @@ This project treats security as a design requirement, not an afterthought.
 - CloudFront serves content via HTTPS only, as well as security response headers
 - CloudTrail and CloudWatch log key activity.  
 - CI/CD process maintains version control and traceability.
- 
+
+---
 ## Challenges / Lessons Learned
 
 ### Security headers breaking the site
@@ -126,14 +126,70 @@ Once the site was live, I started tightening the CloudFront security headers (CS
 - A strict **Permissions-Policy** interfered with fullscreen behavior.
 
 To fix this, I re-balanced the security settings so they stayed strong but didn’t block normal site behavior. That meant adjusting the CSP to allow the specific resources I actually use, adding support for Google Fonts, and cleaning up the Permissions-Policy. I also updated a couple of HTML/JS pieces so they would work properly under the more restrictive rules.
-
 ### Geo-blocking blocked external scanners
 Another issue I ran into was with my CloudFront geo restrictions. I had intentionally limited the allowed countries, but this ended up blocking tools that test and grade security headers. For example, **securityheaders.com scans from Ireland**, so the test wouldn’t reach my site at all. I had to add Ireland to my small allowlist so the scanner could actually review my headers.
 
 Overall, these were good reminders that security controls and application behavior have to align — and sometimes the tools you rely on for validation have their own requirements.
+### DNSSEC 
+Implementing DNSSEC has caused inconsistency with site availability, as Some ISPs / home routers don’t play nicely with DNSSEC and return **SERVFAIL / no result** for domains with DNSSEC. 
+troubleshooting, I ran -
+On Wi-Fi that fails
+```
+nslookup joelflood.com
+dig joelflood.com
+```
+results : 
+```
+joelXXXX@XXXX Documents % nslookup joelflood.com
 
+;; Got SERVFAIL reply from 2001:558:feed::1, trying next server
 
+;; Got SERVFAIL reply from 2001:558:feed::2, trying next server
 
+Server: 75.75.75.75
+
+Address: 75.75.75.75#53
+
+** server can't find joelflood.com: SERVFAIL
+
+joelXXXX@XXXX Documents % dig joelflood.com
+
+; <<>> DiG 9.10.6 <<>> joelflood.com
+
+;; global options: +cmd
+
+;; Got answer:
+
+;; ->>HEADER<<- opcode: QUERY, status: SERVFAIL, id: 5035
+
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+
+; EDNS: version: 0, flags:; udp: 512
+
+; OPT=15: 00 06 ("..")
+
+; OPT=15: 00 09 ("..")
+
+; OPT=15: 00 0d ("..")
+
+;; QUESTION SECTION:
+
+;joelflood.com. IN A
+
+;; Query time: 643 msec
+
+;; SERVER: 2001:558:feed::1#53(2001:558:feed::1)
+
+;; WHEN: Thu Nov 27 09:12:34 EST 2025
+
+;; MSG SIZE  rcvd: 60
+```
+
+To correct, I changed the wifi router DNS setting to CloudFlare's DNS - 1.1.1.1. Updating the wifi router's DNS corrected the issue, but this is not possible to implement at scale, especially when it is a cellular ISP that has DNSSEC issues. I may consider disabling DNSSEC security if I receive enough enough negative feedback.
+
+---
 These practices map naturally to frameworks like **ISO 27001** and **NIST**, and reflect the same controls I apply in my professional work.
 
 ---
