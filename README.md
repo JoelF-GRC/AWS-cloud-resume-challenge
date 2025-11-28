@@ -25,15 +25,15 @@ The project follows a standard CRC architecture using AWS managed services:
 
 ![AWS Cloud Resume Challenge Architecture](diagrams/architecture.png)
 
-| Layer            | AWS Service                        | Purpose                                               |
-| ---------------- | ---------------------------------- | ----------------------------------------------------- |
-| DNS              | **Route 53**                       | Route traffic from endpoint to CloudFront             |
-| Frontend         | **S3**                             | Host static HTML, CSS, and image assets               |
-| Delivery         | **CloudFront**                     | Provide HTTPS, global distribution, and caching       |
-| Backend          | **API Gateway + Lambda**           | Handle visitor counter logic                          |
-| Database         | **DynamoDB**                       | Store visitor count data                              |
-| Access & Logging | **IAM, CloudWatch, CloudTrail**    | Security, monitoring, and auditing                    |
-| CI/CD            | **GitHub Actions** (future action) | Automate deployment to S3 and CloudFront invalidation |
+| Layer            | AWS Service                        | Purpose                                                                        |
+| ---------------- | ---------------------------------- | ------------------------------------------------------------------------------ |
+| DNS              | **Route 53**                       | Route traffic from endpoint to CloudFront                                      |
+| Frontend         | **S3**                             | Host static HTML, CSS, and image assets                                        |
+| Delivery         | **CloudFront**                     | Provide HTTPS, global distribution, OAC to keep S3 bucket private, and caching |
+| Backend          | **API Gateway + Lambda**           | Handle visitor counter logic                                                   |
+| Database         | **DynamoDB**                       | Store visitor count data                                                       |
+| Access & Logging | **IAM, CloudWatch, CloudTrail**    | Security, monitoring, and auditing                                             |
+| CI/CD            | **GitHub Actions** (future action) | Automate deployment to S3 and CloudFront invalidation                          |
 
 All services are configured with encryption, logging, and least-privilege IAM policies.  
 The entire deployment aims to stay within AWS Free Tier and inexpensive services, with some nominal charges for services like Route 53 DNS routing.
@@ -111,6 +111,7 @@ This project treats security as a design requirement, not an afterthought.
 - S3 and DynamoDB encrypted by default.  
 - IAM roles restricted to least privilege.  
 - CloudFront serves content via HTTPS only, as well as security response headers
+- CloudFront OAC is used to keep the S3 bucket fully private, enforce SigV4-signed origin requests, and ensure only CloudFront can access site content.
 - CloudTrail and CloudWatch log key activity.  
 - CI/CD process maintains version control and traceability.
 
