@@ -16,6 +16,7 @@ The site consists of:
 - A **serverless visitor counter** using Lambda, DynamoDB, and API Gateway.
 - **CI/CD automation** for continuous deployment.
 - Documentation that ties technical implementation to **security and GRC principles**.
+- Implementation of security controls including geo-blocking and enhanced security-header settings in CloudFront.
 
 ---
 
@@ -27,6 +28,7 @@ The project follows a standard CRC architecture using AWS managed services:
 
 | Layer | AWS Service | Purpose |
 |--------|--------------|----------|
+| DNS | **Route 53** | Route traffic from endpoint to CloudFront |
 | Frontend | **S3** | Host static HTML, CSS, and image assets |
 | Delivery | **CloudFront** | Provide HTTPS, global distribution, and caching |
 | Backend | **API Gateway + Lambda** | Handle visitor counter logic |
@@ -50,7 +52,7 @@ cloud-resume-challenge/
 ├── infrastructure/           # IaC templates for backend services
 │   └── visitor-counter.yml
 ├── resume-site/              # Static website
-│   ├── robots.txt
+│   ├── robots.txt			  # Block "/images/" folder from search engines	
 │   ├── sitemap.xml
 │   ├── about.html
 │   ├── 1990s.html
@@ -58,7 +60,7 @@ cloud-resume-challenge/
 │   ├── 2010s.html
 │   ├── 2020s.html
 │   ├── digital-media.html
-│   ├── professional.html
+│   ├── professional.html	  # Resume
 │   ├── favicon-16.png
 │   ├── favicon-32.png
 │   ├── favicon.ico
@@ -77,7 +79,8 @@ cloud-resume-challenge/
 - Build and host a modern, responsive portfolio site on AWS.  
 - Apply **serverless architecture** for scalability and low cost.  
 - Implement **secure deployment and governance practices** aligned with ISO 27001 and NIST CSF principles.  
-- Document architecture, design choices, and operational controls.  
+- Document architecture, design choices, and operational controls. 
+- Secure website using AWS configurations - **block public access to S3**, implement **strict security headers and Cloud Security Policy (CSP)**, as well as **DNSSEC**. 
 - Use **CI/CD** to make the site fully automated from GitHub to S3.  
 
 ---
@@ -86,8 +89,8 @@ cloud-resume-challenge/
 
 - **Week 1:** Planned architecture, defined AWS services, created diagrams and base folder structure.  
 - **Week 2:** Developed and tested site locally, configured S3 + CloudFront, and began backend setup (Lambda + DynamoDB).  
-- **Week 3:** Connect visitor counter, complete CI/CD pipeline, and document implementation in `/docs`.  
-
+- **Week 3:** Implement security controls - DNSSEC, strict header security controls, and cloud security policy (CSP).
+- **Week 4:** Connect visitor counter, complete CI/CD pipeline, and document implementation in `/docs`.
 ---
 
 ## Local Testing
@@ -112,7 +115,7 @@ This project treats security as a design requirement, not an afterthought.
 - CloudTrail and CloudWatch log key activity.  
 - CI/CD process maintains version control and traceability.
  
-## Challenges Along the Way
+## Challenges / Lessons Learned
 
 ### Security headers breaking the site
 Once the site was live, I started tightening the CloudFront security headers (CSP, HSTS, Permissions-Policy, etc.). Everything had been working, but the hardening process immediately surfaced some issues:
