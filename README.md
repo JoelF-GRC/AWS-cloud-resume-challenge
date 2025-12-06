@@ -25,15 +25,17 @@ The project follows a standard CRC architecture using AWS managed services:
 
 ![AWS Cloud Resume Challenge Architecture](diagrams/architecture.png)
 
-| Layer            | AWS Service                        | Purpose                                                                        |
-| ---------------- | ---------------------------------- | ------------------------------------------------------------------------------ |
-| DNS              | **Route 53**                       | Route traffic from endpoint to CloudFront                                      |
-| Frontend         | **S3**                             | Host static HTML, CSS, and image assets                                        |
-| Delivery         | **CloudFront**                     | Provide HTTPS, global distribution, OAC to keep S3 bucket private, and caching |
-| Backend          | **API Gateway + Lambda**           | Handle visitor counter logic                                                   |
-| Database         | **DynamoDB**                       | Store visitor count data                                                       |
-| Access & Logging | **IAM, CloudWatch, CloudTrail**    | Security, monitoring, and auditing                                             |
-| CI/CD            | **GitHub Actions** (future action) | Automate deployment to S3 and CloudFront invalidation                          |
+| Layer            | AWS Service                                | Purpose                                                                        |
+| ---------------- | ------------------------------------------ | ------------------------------------------------------------------------------ |
+| DNS              | **Route 53**                               | Route traffic from endpoint to CloudFront                                      |
+| Frontend         | **S3**                                     | Host static HTML, CSS, and image assets                                        |
+| Delivery         | **CloudFront**                             | Provide HTTPS, global distribution, OAC to keep S3 bucket private, and caching |
+| Backend          | **API Gateway + Lambda**                   | Handle visitor counter logic                                                   |
+| Database         | **DynamoDB**                               | Store visitor count data                                                       |
+| Access & Logging | **IAM, CloudWatch, CloudTrail, GuardDuty** | Security, monitoring, auditing, and passive threat detection                   |
+| CI/CD            | **GitHub Actions** (future action)         | Automate deployment to S3 and CloudFront invalidation                          |
+
+Enabled Amazon GuardDuty to provide passive, account-wide threat detection across IAM, Lambda, S3, and DNS activity. GuardDuty sits _outside the traffic flow_ in the architecture—monitoring logs and API events rather than serving content—so it adds continuous visibility with no impact on website performance or availability.
 
 All services are configured with encryption, logging, and least-privilege IAM policies.  
 The entire deployment aims to stay within AWS Free Tier and inexpensive services, with some nominal charges for services like Route 53 DNS routing.
@@ -79,7 +81,7 @@ cloud-resume-challenge/
 - Apply **serverless architecture** for scalability and low cost.  
 - Implement **secure deployment and governance practices** aligned with ISO 27001 and NIST CSF principles.  
 - Document architecture, design choices, and operational controls. 
-- Secure website using AWS configurations - **block public access to S3**, implement **strict security headers and Cloud Security Policy (CSP)**, as well as **DNSSEC**. 
+- Secure website using AWS configurations — **block public access to S3**, implement **strict security headers and Cloud Security Policy (CSP)**, and apply CloudFront controls such as geo-restriction and HTTPS enforcement.
 - Use **CI/CD** to make the site fully automated from GitHub to S3.  
 
 ---
@@ -88,7 +90,7 @@ cloud-resume-challenge/
 
 - **Week 1:** Planned architecture, defined AWS services, created diagrams and base folder structure.  
 - **Week 2:** Developed and tested site locally, configured S3 + CloudFront, and began backend setup (Lambda + DynamoDB).  
-- **Week 3:** Implement security controls - DNSSEC, strict header security controls, and cloud security policy (CSP).
+- **Week 3:** Implement security controls — strict CloudFront header security controls (CSP, HSTS, Permissions Policy), geo-restriction, and end-to-end HTTPS.
 - **Week 4:** Connect visitor counter, complete CI/CD pipeline, and document implementation in `/docs`.
 ---
 
@@ -114,6 +116,7 @@ This project treats security as a design requirement, not an afterthought.
 - CloudFront OAC is used to keep the S3 bucket fully private, enforce SigV4-signed origin requests, and ensure only CloudFront can access site content.
 - CloudTrail and CloudWatch log key activity.  
 - CI/CD process maintains version control and traceability.
+- Enabled GuardDuty for passive threat detection across IAM, Lambda, S3, and DNS; it sits outside the data flow and adds continuous monitoring with minimal cost.
 
 ---
 ## Challenges / Lessons Learned
@@ -131,64 +134,39 @@ To fix this, I re-balanced the security settings so they stayed strong but didn�
 Another issue I ran into was with my CloudFront geo restrictions. I had intentionally limited the allowed countries, but this ended up blocking tools that test and grade security headers. For example, **securityheaders.com scans from Ireland**, so the test wouldn’t reach my site at all. I had to add Ireland to my small allowlist so the scanner could actually review my headers.
 
 Overall, these were good reminders that security controls and application behavior have to align — and sometimes the tools you rely on for validation have their own requirements.
-### DNSSEC 
-Implementing DNSSEC has caused inconsistency with site availability, as Some ISPs / home routers don’t play nicely with DNSSEC and return **SERVFAIL / no result** for domains with DNSSEC. 
-troubleshooting, I ran -
-On Wi-Fi that fails
-```
-nslookup joelflood.com
-dig joelflood.com
-```
-results : 
-```
-joelXXXX@XXXX Documents % nslookup joelflood.com
+### **DNSSEC – Why I Disabled It**
 
-;; Got SERVFAIL reply from 2001:558:feed::1, trying next server
+I originally attempted to implement **DNSSEC** for additional domain integrity protection.  
+However, during testing, DNSSEC caused **intermittent SERVFAIL errors** on validating resolvers (Cloudflare 1.1.1.1, some ISP DNS servers, and certain home routers).
 
-;; Got SERVFAIL reply from 2001:558:feed::2, trying next server
+Troubleshooting showed:
 
-Server: 75.75.75.75
+- The domain worked normally on non-validating resolvers
+    
+- Validating resolvers intermittently returned:  
+    **“invalid SEP”**, **“bogus DNSKEY”**, or **SERVFAIL**
+    
+- Even with correct DS records, **GoDaddy’s registrar backend failed to store the DS correctly**, a known issue with external DNS providers and ECDSA keys
+    
+- This resulted in **inconsistent availability**, depending on the DNS resolver used by the end-user
+    
 
-Address: 75.75.75.75#53
+Because this portfolio site must load reliably for all visitors—and DNSSEC is optional—I decided to **fully disable DNSSEC** at both Route 53 and the registrar.
 
-** server can't find joelflood.com: SERVFAIL
+**Lesson:** DNSSEC adds complexity and relies on proper support from registrars and resolvers. If any link in that chain mishandles the DS record, the domain becomes intermittently unreachable. For personal sites, reliability outweighs the marginal security benefit.
+### **CSP blocked the visitor counter**
 
-joelXXXX@XXXX Documents % dig joelflood.com
+My DynamoDB/Lambda visitor counter worked when calling the API directly, but always returned `n/a` on the live site. The issue turned out to be my strict CloudFront **Content Security Policy**. Because I hadn’t defined `connect-src`, the browser defaulted to:
 
-; <<>> DiG 9.10.6 <<>> joelflood.com
+`default-src 'self'`
 
-;; global options: +cmd
+This silently blocked all outbound `fetch()` calls — including the request to API Gateway. The fix was simply adding my API domain to `connect-src`:
 
-;; Got answer:
+`connect-src 'self' https://hvmxivh8yg.execute-api.us-west-1.amazonaws.com;`
 
-;; ->>HEADER<<- opcode: QUERY, status: SERVFAIL, id: 5035
+After updating CSP and invalidating CloudFront, the counter worked immediately.
 
-;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
-
-;; OPT PSEUDOSECTION:
-
-; EDNS: version: 0, flags:; udp: 512
-
-; OPT=15: 00 06 ("..")
-
-; OPT=15: 00 09 ("..")
-
-; OPT=15: 00 0d ("..")
-
-;; QUESTION SECTION:
-
-;joelflood.com. IN A
-
-;; Query time: 643 msec
-
-;; SERVER: 2001:558:feed::1#53(2001:558:feed::1)
-
-;; WHEN: Thu Nov 27 09:12:34 EST 2025
-
-;; MSG SIZE  rcvd: 60
-```
-
-To correct, I changed the wifi router DNS setting to CloudFlare's DNS - 1.1.1.1. Updating the wifi router's DNS corrected the issue, but this is not possible to implement at scale, especially when it is a cellular ISP that has DNSSEC issues. I may consider disabling DNSSEC security if I receive enough enough negative feedback.
+**Lesson:** strict CSP is great, but you must explicitly allow the domains your app needs.
 
 ---
 These practices map naturally to frameworks like **ISO 27001** and **NIST**, and reflect the same controls I apply in my professional work.
