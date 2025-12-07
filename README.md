@@ -101,7 +101,7 @@ cd aws-cloud-resume-challenge/resume-site
 open index.html
 ```
 
-Once the API Gateway endpoint is live, update the `fetch()` URL in `index.html` to link the visitor counter to the deployed backend.
+Update the visitor-counter `fetch()` URL in `main.js` (used on `professional.html`) once the API Gateway endpoint is deployed.
 
 ---
 
