@@ -130,10 +130,10 @@ Once the site was live, I started tightening the CloudFront security headers (CS
 
 To fix this, I re-balanced the security settings so they stayed strong but didn’t block normal site behavior. That meant adjusting the CSP to allow the specific resources I actually use, adding support for Google Fonts, and cleaning up the Permissions-Policy. I also updated a couple of HTML/JS pieces so they would work properly under the more restrictive rules.
 ### Geo-blocking blocked external scanners
-Another issue I ran into was with my CloudFront geo restrictions. I had intentionally limited the allowed countries, but this ended up blocking tools that test and grade security headers. For example, securityheaders.com scans from a country I initially did not whitelist, so the test wouldn’t reach my site at all. I had to add Ireland to my small allowlist so the scanner could actually review my headers.
+Another issue I ran into was with my CloudFront geo restrictions. I had intentionally limited the allowed countries, but this ended up blocking tools that test and grade security headers. For example, when using web-based scanning tool, the scans originated from a country I initially did not have included whitelist, so the test wouldn’t reach my site at all. I had to add the country to my small allowlist so the scanner could actually review my headers.
 
 Overall, these were good reminders that security controls and application behavior have to align, and sometimes the tools you rely on for validation have their own requirements.
-### **DNSSEC – Why I Disabled It**
+### **DNSSEC - Why I Disabled It**
 
 I originally attempted to implement **DNSSEC** for additional domain integrity protection.  
 However, during testing, DNSSEC caused **intermittent SERVFAIL errors** on validating resolvers (Cloudflare 1.1.1.1, some ISP DNS servers, and certain home routers).
