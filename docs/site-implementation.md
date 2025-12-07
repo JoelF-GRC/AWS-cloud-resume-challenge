@@ -1,6 +1,6 @@
 # Site Implementation Document
 
-_For joelflood.com — Art Portfolio + Professional Resume Site_
+_For joelflood.com - Art Portfolio + Professional Resume Site_
 
 ## 1. Objective
 
