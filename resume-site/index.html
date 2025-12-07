@@ -9,6 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -28,13 +32,13 @@
       </button>
       <ul id="nav-list" class="nav-list">
         <li><a href="/" class="nav-link nav-link--active">Home</a></li>
-        <li><a href="/about.html" class="nav-link">About</a></li>
-        <li><a href="/1990s.html" class="nav-link">1990s</a></li>
-        <li><a href="/2000s.html" class="nav-link">2000s</a></li>
-        <li><a href="/2010s.html" class="nav-link">2010s</a></li>
-        <li><a href="/2020s.html" class="nav-link">2020s</a></li>
-        <li><a href="/digital-media.html" class="nav-link">Digital Media</a></li>
-        <li><a href="/professional.html" class="nav-link">Professional</a></li>
+        <li><a href="/about" class="nav-link">About</a></li>
+        <li><a href="/1990s" class="nav-link">1990s</a></li>
+        <li><a href="/2000s" class="nav-link">2000s</a></li>
+        <li><a href="/2010s" class="nav-link">2010s</a></li>
+        <li><a href="/2020s" class="nav-link">2020s</a></li>
+        <li><a href="/digital-media" class="nav-link">Digital Media</a></li>
+        <li><a href="/professional" class="nav-link">Professional</a></li>
       </ul>
     </nav>
   </div>
@@ -47,26 +51,25 @@
         <h1>Artwork by Joel Flood</h1>
         <p>
           A curated selection of paintings, drawings, and digital work spanning the 1990s
-          through the 2020s. This site highlights the art first, with a dedicated space
-          for my professional work in security, GRC, and compliance.
+          through the 2020s.
         </p>
         <div class="hero-actions">
-          <a href="/1990s.html" class="btn">Explore the work</a>
-          <a href="/professional.html" class="btn btn-ghost">View professional profile</a>
+          <a href="/1990s" class="btn">Explore the work</a>
+          <a href="/professional" class="btn btn-ghost">View professional profile</a>
         </div>
       </div>
       <div class="hero-highlight-grid">
         <figure class="hero-thumb">
-          <img src="/assets/images/highlights/hero-1.jpg" alt="Sample artwork by Joel Flood" loading="lazy">
+          <img src="assets/images/self-portrait.jpg" alt="Sample artwork by Joel Flood" loading="lazy">
         </figure>
         <figure class="hero-thumb">
-          <img src="/assets/images/highlights/hero-2.jpg" alt="Sample artwork by Joel Flood" loading="lazy">
+          <img src="assets/images/litho-bridge.jpg" alt="Sample artwork by Joel Flood" loading="lazy">
         </figure>
         <figure class="hero-thumb">
-          <img src="/assets/images/highlights/hero-3.jpg" alt="Sample artwork by Joel Flood" loading="lazy">
+          <img src="assets/images/orange-excavation.jpg" alt="Sample artwork by Joel Flood" loading="lazy">
         </figure>
         <figure class="hero-thumb">
-          <img src="/assets/images/highlights/hero-4.jpg" alt="Sample artwork by Joel Flood" loading="lazy">
+          <img src="assets/images/titmouse.jpg" alt="Sample artwork by Joel Flood" loading="lazy">
         </figure>
       </div>
     </div>
@@ -76,60 +79,45 @@
     <div class="container">
       <header class="section-header">
         <h2>Selected Series</h2>
-        <p class="muted">Browse by era and medium.</p>
+        <p class="muted">Browse by era.</p>
       </header>
 
       <div class="grid grid-3">
-        <a href="/1990s.html" class="card-link">
+        <a href="/1990s" class="card-link">
           <article class="card">
             <h3>1990s</h3>
-            <p>Early work and foundations in drawing and painting.</p>
+            <p>Early work - high school and college</p>
           </article>
         </a>
-        <a href="/2000s.html" class="card-link">
+        <a href="/2000s" class="card-link">
           <article class="card">
             <h3>2000s</h3>
-            <p>Mixed media, experimentation, and evolving themes.</p>
+            <p>Post-college</p>
           </article>
         </a>
-        <a href="/2010s.html" class="card-link">
+        <a href="/2010s" class="card-link">
           <article class="card">
             <h3>2010s</h3>
-            <p>Refined composition, narrative, and large-format work.</p>
+            <p>When I find the time pieces</p>
           </article>
         </a>
-        <a href="/2020s.html" class="card-link">
+        <a href="/2020s" class="card-link">
           <article class="card">
             <h3>2020s</h3>
-            <p>Current pieces: digital, hybrid, and minimal studies.</p>
+            <p>Yet to find the time pieces</p>
           </article>
         </a>
-      </div>
-
-      <div class="grid grid-2 mt-l">
-        <a href="/digital-media.html" class="card-link">
+        <a href="/digital-media" class="card-link">
           <article class="card">
             <h3>Digital Media</h3>
-            <p>Contemporary digital studies, experiments, and commissions.</p>
-          </article>
-        </a>
-        <a href="/professional.html" class="card-link">
-          <article class="card">
-            <h3>Professional</h3>
-            <p>Security &amp; GRC resume, case studies, and GitHub links.</p>
+            <p>Commissioned digital work</p>
           </article>
         </a>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container">
-      <div id="visitor-counter" class="visitor-counter" aria-live="polite">
-        Visitors: &hellip;
-      </div>
-    </div>
-  </section>
+  
 </main>
 
 <footer class="site-footer">
@@ -138,32 +126,6 @@
   </div>
 </footer>
 
-<script>
-  const toggle = document.querySelector('.nav-toggle');
-  const navList = document.querySelector('#nav-list');
-  if (toggle && navList) {
-    toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      navList.classList.toggle('nav-list--open');
-    });
-  }
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  (async () => {
-    const el = document.getElementById('visitor-counter');
-    if (!el) return;
-    try {
-      // Replace with your API Gateway URL when wired up
-      // const res = await fetch('YOUR_VISITOR_API_URL');
-      // const data = await res.json();
-      // el.textContent = `Visitors: ${data.count.toLocaleString()}`;
-      el.textContent = 'Visitors: coming soon';
-    } catch {
-      el.textContent = 'Visitors: —';
-    }
-  })();
-</script>
+<script src="/assets/js/main.js" defer></script>
 </body>
 </html>

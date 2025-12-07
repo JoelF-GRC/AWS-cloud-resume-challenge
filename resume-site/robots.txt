@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /assets/images/
+
+Sitemap: https://joelflood.com/sitemap.xml

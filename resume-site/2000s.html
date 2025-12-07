@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2000s Artwork – Joel Flood</title>
+  <meta name="description" content="2000s artwork by Joel Flood." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand">
+      <a href="/" class="brand-link">
+        <span class="brand-title">Joel Flood</span>
+        <span class="brand-subtitle">Art & Professional Portfolio</span>
+      </a>
+    </div>
+    <nav class="nav" aria-label="Primary">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+      <ul id="nav-list" class="nav-list">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about" class="nav-link">About</a></li>
+        <li><a href="/1990s" class="nav-link">1990s</a></li>
+        <li><a href="/2000s" class="nav-link nav-link--active">2000s</a></li>
+        <li><a href="/2010s" class="nav-link">2010s</a></li>
+        <li><a href="/2020s" class="nav-link">2020s</a></li>
+        <li><a href="/digital-media" class="nav-link">Digital Media</a></li>
+        <li><a href="/professional" class="nav-link">Professional</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<main id="main" class="section">
+  <div class="container">
+    <header class="section-header">
+      <h1>2000s Artwork</h1>
+      <p class="gallery-intro">
+        Post-college
+      </p>
+    </header>
+
+    <div class="gallery-grid">
+  <figure
+    class="art-card js-lightbox-trigger"
+    data-full="assets/images/litho-bridge.jpg"
+    data-title="Bridge"
+    data-meta="2009 · Lithography print on paper"
+  >
+    <img src="assets/images/litho-bridge.jpg" alt="Bridge, 2009 lithography print on paper">
+    <figcaption class="art-meta">
+      <span class="art-title">Bridge</span>
+      <span class="art-year">2009</span>
+      <span class="art-medium">Lithography print on paper</span>
+    </figcaption>
+  </figure>
+
+ <figure
+    class="art-card js-lightbox-trigger"
+    data-full="assets/images/litho-owl.jpg"
+    data-title="Owl"
+    data-meta="2009 · Lithography print on paper"
+  >
+    <img src="assets/images/litho-owl.jpg" alt="Owl">
+    <figcaption class="art-meta">
+      <span class="art-title">Owl</span>
+      <span class="art-year">2009</span>
+      <span class="art-medium">Lithography print on paper</span>
+    </figcaption>
+  </figure>
+
+  <figure
+    class="art-card js-lightbox-trigger"
+    data-full="assets/images/titmouse.jpg"
+    data-title="Titmouse"
+    data-meta="2007 · Acrylic on Paper">
+    <img src="assets/images/titmouse.jpg" alt="Titmouse, 2007 acrylic on paper">
+    <figcaption class="art-meta">
+      <span class="art-title">Titmouse</span>
+      <span class="art-year">2007</span>
+      <span class="art-medium">Acrylic on Paper</span>
+    </figcaption>
+  </figure>
+  
+    <figure
+    class="art-card js-lightbox-trigger"
+    data-full="assets/images/red-bird.jpg"
+    data-title="Red bird"
+    data-meta="2007 · Acrylic on Paper">
+    <img src="assets/images/red-bird.jpg" alt="Red Bird">
+    <figcaption class="art-meta">
+      <span class="art-title">Red bird</span>
+      <span class="art-year">2008</span>
+      <span class="art-medium"> Acrylic and ink on paper. 15″ x 22″</span>
+    </figcaption>
+  </figure>
+  
+      <figure
+    class="art-card js-lightbox-trigger"
+    data-full="assets/images/mountain-laurel.jpg"
+    data-title="Mountain laurel"
+    data-meta="2007 · Acrylic on Paper">
+    <img src="assets/images/mountain-laurel.jpg" alt="Mountain laurel">
+    <figcaption class="art-meta">
+      <span class="art-title">Mountain laurel</span>
+      <span class="art-year">2009</span>
+      <span class="art-medium">Etching (aquatint) print on paper</span>
+    </figcaption>
+  </figure>
+
+  
+</div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>&copy; <span id="year"></span> Joel Flood</p>
+  </div>
+</footer>
+
+<div id="lightbox"
+     class="lightbox"
+     aria-hidden="true"
+     role="dialog"
+     aria-modal="true">
+  <div class="lightbox-backdrop js-lightbox-close"></div>
+  <div class="lightbox-content">
+    <button class="lightbox-close js-lightbox-close" aria-label="Close artwork view">×</button>
+    <img id="lightbox-image" src="" alt="" />
+  </div>
+</div>
+
+<script src="/assets/js/main.js" defer></script>
+</body>
+</html>
