@@ -78,7 +78,8 @@ The site features:
 
 ### 4.1 File Structure
 
-├── resume-site/           # Static website
+```
+├── resume-site/                # Static website
    ├── robots.txt			    # Block "/images/" from search engines	
    ├── sitemap.xml
    ├── about.html
@@ -87,7 +88,7 @@ The site features:
    ├── 2010s.html
    ├── 2020s.html
    ├── digital-media.html
-   ├── professional.html	  # Resume
+   ├── professional.html	     # Resume
    ├── favicon-16.png
    ├── favicon-32.png
    ├── favicon.ico
@@ -95,6 +96,7 @@ The site features:
        ├── css/style.css
        └── images/
        └── js/main.js
+```
 
 ### 4.2 UX & Styling
 
