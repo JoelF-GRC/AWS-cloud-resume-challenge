@@ -4,20 +4,14 @@ _For joelflood.com — Art Portfolio + Professional Resume Site_
 
 ## 1. Objective
 
-The objective of this project is to design and deploy a modern, minimal, highly secure, cost-efficient, static website hosted entirely on AWS.  
+The objective of this project is to design and deploy a modern, minimal, highly secure, cost-efficient, static website hosted entirely on AWS.
 The site features:
 
-- A visual-first **art portfolio** (primary focus)
-    
-- A clean, accessible **professional resume page**
-  
-- Leverage AWS services to demonstrate working knowledge of AWS ecosystem
-    
-- Links to **GitHub projects**, including Cloud Resume Challenge and GRC/AWS repos
-    
-- Optional pages for bicycles, Daniel Rebour drawings, and new artwork categories
-    
-The implementation follows AWS Cloud Resume Challenge principles while expanding the scope into a full personal portfolio.
+- A visual-first art portfolio (primary focus)
+- A clean, accessible professional resume page
+- Use of AWS services to demonstrate cloud proficiency
+- GitHub repo links for Cloud Resume Challenge and GRC/AWS projects
+- Optional pages for bicycles, Rebour drawings, and additional artwork
 
 ---
 
@@ -25,303 +19,197 @@ The implementation follows AWS Cloud Resume Challenge principles while expanding
 
 ### 2.1 High-Level Diagram
 
-**Frontend static hosting:**
+**Frontend hosting stack**
 
-- Amazon S3 (private bucket with OAI)
-    
-- Amazon CloudFront (global CDN)
-    
-- Route 53 (DNS + apex domain)
-    
-- ACM (TLS certificates)
-    
+- Amazon S3 (private, not publicly accessible)
+- CloudFront with Origin Access Control (OAC)
+- AWS ACM for TLS certificates
+- Route 53 DNS
 
-**Backend / dynamic features (optional or future):**
+**Backend components**
 
-- Lambda + API Gateway for visitor counter
-    
-- DynamoDB visitor table
-    
-- CloudWatch logs for request tracking
-    
+- Lambda for visitor counter logic
+- API Gateway for HTTPS endpoint
+- DynamoDB for atomic counter storage
+- CloudWatch logs for monitoring
 
-**Security:**
+**Security & Monitoring**
 
-- CloudFront WAF (optional)
-    
-- Geo-restriction (non-US allowed list)
-    
-- Strict CSP + security headers
-    
-- DNSSEC on Route 53
-    
+- GuardDuty enabled for the AWS account
+- CloudFront security headers & CSP
+- Geo-restriction allowlist
+- Optional AWS WAF (future)
+
 ---
 
 ## 3. Implementation Components
 
-### 3.1 S3 Bucket Setup
+### 3.1 S3 Bucket
 
-- **Bucket name:** `joelflood.com` (public access BLOCKED)
-    
-- **Website hosting disabled** (CloudFront handles routing)
-    
-- **OAC (Origin Access Control)** configured so only CloudFront can access the S3 bucket via SigV4-signed requests, keeping the bucket fully private
-    
-- **Clean URLs (no .html)** implemented through CloudFront’s behavior and default root object
-    
-### 3.2 CloudFront Distribution
+- Bucket hosts static assets
+- Public access blocked
+- OAC grants CloudFront exclusive read access
+- Website hosting disabled (CloudFront handles routing)
 
-- Default behavior → S3 bucket origin
-    
-- Custom error pages for 403 → redirect to `/index.html`
-    
-- Geo-blocking enabled to only allow limited whitelisted countries
-        
-- HTTP → HTTPS enforced
-    
-- Long TTL caching enabled for images, short TTL for HTML
-    
-### 3.3 TLS Certificates
+### 3.2 CloudFront
 
-- ACM certificate issued for:
-    
-    - `joelflood.com`
-        
-    - `www.joelflood.com`
-        
+- Uses OAC for secure origin requests
+- HTTPS enforced
+- Custom error pages and routing rules
+- Geo-restriction enabled with small allowlist
+- Includes strong security headers (CSP, HSTS, permissions-policy, etc.)
+
+### 3.3 TLS Certificates (ACM)
+
+- Issued for:
+  - joelflood.com
+  - www.joelflood.com
 - Attached to CloudFront
-    
+
 ### 3.4 Route 53
 
-- Hosted zone for domain
-    
-- A and AAAA records pointing to CloudFront
-    
-- CNAME for `www` to CloudFront
-    
-- DNSSEC enabled on the zone
-    
-- Nameservers updated at the registrar
-    
+- Apex and www records point to CloudFront
+- **DNSSEC disabled** due to reliability problems with registrar integration
+- High availability prioritized
+
 ---
 
 ## 4. Frontend Implementation
 
-### 4.1 File & Folder Structure
+### 4.1 File Structure
 
-|── resume-site/              # Static website
-│   ├── robots.txt			  # Block "/images/" from search engines	
-│   ├── sitemap.xml
-│   ├── about.html
-│   ├── 1990s.html
-│   ├── 2000s.html
-│   ├── 2010s.html
-│   ├── 2020s.html
-│   ├── digital-media.html
-│   ├── professional.html	  # Resume
-│   ├── favicon-16.png
-│   ├── favicon-32.png
-│   ├── favicon.ico
-│   └── assets/
-│       ├── css/style.css
-│       └── images/           # Art images
-│       └── js/main.js
+├── resume-site/           # Static website
+   ├── robots.txt			    # Block "/images/" from search engines	
+   ├── sitemap.xml
+   ├── about.html
+   ├── 1990s.html
+   ├── 2000s.html
+   ├── 2010s.html
+   ├── 2020s.html
+   ├── digital-media.html
+   ├── professional.html	  # Resume
+   ├── favicon-16.png
+   ├── favicon-32.png
+   ├── favicon.ico
+   └── assets/
+       ├── css/style.css
+       └── images/
+       └── js/main.js
 
-### 4.2 Visual/UX Design
+### 4.2 UX & Styling
 
-- Minimal, contemporary, **not 2010-style**
-    
-- Typography: Google Fonts **Inter** (modern, accessible)
-    
-- Consistent spacing + white space
-    
-- Art images displayed in grid → tap to open **custom Lightbox**
-    
-- Light/dark mode harmony (fixes applied)
-    
-- Fully responsive:
-    
-    - Mobile-first gallery
-        
-    - Hamburger nav with JS
-        
-    - Grid auto-fit for artwork
-        
+- Minimal modern layout
+- Clean typography via Inter font
+- Responsive grid galleries
+- Lightbox implemented without external libraries
+- Mobile nav via hamburger menu + external JS
+- Consideration for dark mode
+
 ### 4.3 Resume Page
 
-Resume page is located at `/professional` on your live site. Current uploaded version referenced here:  
+- Single, clean HTML page
+- Professional narrative + key certifications
+- Designed to be printable onto one page
+- Visitor counter injected at runtime
+- Accessible layout and semantic HTML
 
-Improvements added:
+### 4.4 Lightbox
 
-- Certificate chips
-    
-- Clean typography
-    
-- Header with certifications inline
-    
-- Accessible section labels (`aria-labelledby`)
-    
-- Visitor counter integration at bottom
-    
-### 4.4 Lightbox Implementation
+- Vanilla JavaScript
+- Fullscreen overlay for artwork
+- Esc and click-to-close supported
+- CSP rules updated to allow required functionality
 
-- CSS + JS solution avoids external libraries
-    
-- JS listens for `click` events on `.gallery-item`
-    
-- Closes on backdrop click or `ESC`
-    
-### 4.5 Navigation
-
-- Global nav included in header
-    
-- Hamburger menu for mobile only
-    
-- Uses accessible aria roles
-    
-- Smooth-scroll for internal anchors
-    
 ---
 
 ## 5. Security Hardening
 
-### 5.1 Security Headers
+### 5.1 CloudFront Security Headers
 
-Configured at CloudFront:
+All configured at CloudFront, not inline:
 
-- `Strict-Transport-Security: max-age=63072000; includeSubdomains; preload`
-    
-- `Content-Security-Policy`  
-    (carefully refined after initial breakage)
-    
-- `X-Content-Type-Options: nosniff`
-    
-- `Referrer-Policy: strict-origin-when-cross-origin`
-    
-- `Permissions-Policy: camera=(), microphone=(), geolocation=()`
-    
-- `X-Frame-Options: DENY`
+- Strict-Transport-Security
+- Content-Security-Policy (strict, no inline JS)
+- X-Content-Type-Options
+- Permissions-Policy
+- Referrer-Policy
+- X-Frame-Options
 
-- `Geo-location blocking: set restrictive whitelist of approved countries`
-    
-Documented issues during implementation:
+### 5.2 CSP Issues & Resolutions
 
-- CSP initially broke lightbox → fixed by adding `img-src 'self' data:`
-    
-- Inline JS blocked → converted to external `/main.js`
-    
-- securityheaders.com scan blocked due to geo-restriction → required allowing Ireland
-    
-### 5.2 WAF (optional)
+- Initial CSP blocked Google Fonts → fixed by updating font-src
+- `fetch()` to API Gateway blocked → updated connect-src
+- Gallery images blocked → updated img-src
 
-Rules you planned to use:
+### 5.3 GuardDuty
 
-- AWS Managed “Common” rules
-    
-- Bot Control light
-    
-- Rate-based throttle (1000 requests / 5 min)
-    
-- Country allow list
-    
-### 5.3 Additional Security
+- Enabled at the account level
+- Provides passive threat detection across IAM, S3, CloudTrail, and Lambda
 
-- DNSSEC
-    
-- No public S3 bucket
-    
-- CloudFront prevents origin exposure
-    
-- CloudTrail logs bucket/object access
-    
+### 5.4 WAF (Planned)
+
+- AWS Managed ruleset
+- Optional bot control
+- Rate limiting
+- Alignment with CloudFront geo restrictions
+
 ---
 
-## 6. Visitor Counter Implementation (Cloud Resume Challenge Requirement)
+## 6. Visitor Counter (Cloud Resume Challenge Component)
 
-### 6.1 Architecture
+### 6.1 Backend Architecture
 
-- DynamoDB table:
-    
-    - pk: `site_visitors`
-        
-    - counter: number
-        
-- Lambda function increments + returns visitor count
-    
-- API Gateway exposes HTTPS endpoint
-    
-- CORS restricted to `joelflood.com`
-    
-- JS fetches count on page load
-    
+- DynamoDB table: `site_visitors`
+- Lambda function:
+  - Atomically increments counter
+  - Returns count as JSON
+- API Gateway:
+  - HTTPS endpoint
+  - CORS allowed only from joelflood.com
+- CloudWatch logging enabled
+
 ### 6.2 Frontend Integration
 
-In `main.js`:
+JS in main.js:
 
-``fetch('https://api.joelflood.com/visitors')   .then(res => res.json())   .then(data => {     document.getElementById('visitor-counter').textContent =       `Visitors: ${data.count}`;   });``
+```javascript
+fetch('https://api.joelflood.com/visitors')
+  .then(res => res.json())
+  .then(data => {
+    const el = document.getElementById('visitor-counter');
+    if (el) el.textContent = `Visitors: ${data.count}`;
+  })
+  .catch(() => {
+    const el = document.getElementById('visitor-counter');
+    if (el) el.textContent = 'Visitors: n/a';
+  });
+```
 
-Element on page:
+HTML element:
 
-`<div id="visitor-counter" class="visitor-counter" aria-live="polite">   Visitors: … </div>`
+```html
+<div id="visitor-counter" aria-live="polite"></div>
+```
+
+### CSP Note
+
+CSP initially blocked the counter because `connect-src` was missing.
+
+Resolved by adding:
+
+```
+connect-src https://api.joelflood.com;
+```
 
 ---
 
 ## 7. Future Enhancements
 
-### 7.1 Terraform Rebuild
-
-A parallel clean implementation entirely in Terraform:
-
-- S3, CloudFront, Route 53, ACM
-    
-- Lambda/API Gateway
-    
-- IAM roles
-    
-- Automated deployments from GitHub Actions
-    
-### 7.2 CI/CD
-
-Move off AWS GUI:
-
-- GitHub Actions pipeline:
-    
-    - Validate HTML/CSS
-        
-    - Upload to S3
-        
-    - Invalidate CloudFront cache
-        
-    - Run Lighthouse tests
-        
-### 7.3 Additional Pages
-
-- `/bicycle` historian archive
-    
-- `/bicycle/rebour` with:
-    
-    - Original drawing
-        
-    - Le Cycle reference
-        
-    - French text
-        
-    - English translation
-        
-### 7.4 Art Metadata
-
-Optional JSON metadata:
-
-- Title
-    
-- Medium
-    
-- Year
-    
-- Tags
-    
-
-Used to auto-generate gallery pages.
+- Full Terraform IaC rebuild
+- GitHub Actions CI/CD pipeline
+- Lighthouse automated performance checks
+- Additional gallery pages (bicycles, Rebour archive)
+- Art metadata index for future automation
 
 ---
 
@@ -329,37 +217,34 @@ Used to auto-generate gallery pages.
 
 ### 8.1 Costs
 
-- S3: ~$0.20/month
-    
-- CloudFront: ~$1–3/month depending on image traffic
-    
-- Route 53: $0.50/zone, $12/year domain
-    
-- Lambda/DynamoDB: < $0.10/month
-    
-### 8.2 Backup Strategy
+- S3 storage: low
+- CloudFront: a few dollars per month depending on bandwidth
+- Route 53: standard domain + hosted zone pricing
+- Lambda + DynamoDB: near free-tier usage
 
-- GitHub version control handles content
-    
-- S3 versioning optional for rollback
-    
-- CloudFront invalidations automated via CI/CD
-    
+### 8.2 Backups
+
+- S3 versioning protects all static site files, with older versions archived automatically via lifecycle rules.
+- DynamoDB PITR enabled for the `site_visitors` table.
+- GitHub maintains full history of source code and site content.
+
+Backups rely on AWS-native features and require no additional operational overhead.
+
+
 ### 8.3 Monitoring
 
-- CloudWatch logs for API
-    
-- Route 53 health checks optional
-    
-- AWS Billing alarms
-    
+- CloudWatch Logs (Lambda + API Gateway)
+- CloudTrail for configuration auditability
+- GuardDuty for threat detection
+- Billing alerts configured
 
 ---
 
 ## 9. Appendix
 
-### 9.1 Referenced Resume Page
+### 9.1 Resume Page
 
-The uploaded `professional.html` file incorporated into the project:  
+`professional.html` provides a modern one-page resume integrated into the site and includes certifications, experience, and visitor analytics.
 
 ---
+
