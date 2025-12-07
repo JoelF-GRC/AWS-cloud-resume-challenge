@@ -1,5 +1,4 @@
 # Cloud Resume Challenge – Updated Project Plan  
-_Aligned with current README and Site Implementation_
 
 This plan reflects the **final architecture, security posture, and functionality** currently implemented on **joelflood.com**.  
 It expands beyond the original CRC requirements to include modern design, OAC-based S3 security, strict CSP headers, GuardDuty, geo-restriction tuning, and a scalable art‑focused structure.
@@ -128,18 +127,18 @@ fetch('https://api.joelflood.com/visitors')
 
 ---
 
-## 4. CRC Deliverables (Completed)
+## 4. CRC Deliverables
 
-| Requirement | Status | Implementation |
-|------------|--------|----------------|
-| Static website | ✅ | Hosted privately in S3, delivered via CloudFront |
-| HTTPS | ✅ | ACM + CloudFront |
-| DNS | ✅ | Route 53 with apex + www aliases |
-| Visitor counter | ✅ | Lambda + DynamoDB + API Gateway |
-| JavaScript call to API | ✅ | External JS with CSP compliance |
-| CI/CD | ⏳ Planned | GitHub Actions deployment |
-| IaC | ⏳ Planned | Terraform rebuild |
-| Extra security | ⭐ | OAC, CSP, HSTS, GuardDuty, geo restriction |
+| Requirement            | Implementation                                   |
+| ---------------------- | ------------------------------------------------ |
+| Static website         | Hosted privately in S3, delivered via CloudFront |
+| HTTPS                  | ACM + CloudFront                                 |
+| DNS                    | Route 53 with apex + www aliases                 |
+| Visitor counter        | Lambda + DynamoDB + API Gateway                  |
+| JavaScript call to API | External JS with CSP compliance                  |
+| CI/CD (future)         | GitHub Actions deployment                        |
+| IaC (future)           | Terraform rebuild                                |
+| Extra security         | OAC, CSP, HSTS, GuardDuty, geo-restriction       |
 
 ---
 
