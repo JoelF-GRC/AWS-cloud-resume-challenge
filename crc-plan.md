@@ -1,64 +1,210 @@
-# Cloud Resume Challenge – Project Plan
+# Cloud Resume Challenge – Updated Project Plan  
+_Aligned with current README and Site Implementation_
 
-This document outlines the plan and progress for my **AWS Cloud Resume Challenge**, which I adapted into an art and professional portfolio site.
-
----
-
-## Objectives
-
-- Build a **static, responsive website** hosted entirely on AWS.
-- Feature my **artwork and professional background** in a clean, modern design.
-- Implement a **serverless visitor counter** using Lambda, API Gateway, and DynamoDB.
-- Apply **security and GRC best practices** across all AWS resources.
-- Automate deployment through **CI/CD** and Infrastructure as Code.
+This plan reflects the **final architecture, security posture, and functionality** currently implemented on **joelflood.com**.  
+It expands beyond the original CRC requirements to include modern design, OAC-based S3 security, strict CSP headers, GuardDuty, geo-restriction tuning, and a scalable art‑focused structure.
 
 ---
 
-## AWS Services
+## 1. Project Objectives
 
-| Service | Role |
-|----------|------|
-| S3 | Host static HTML, CSS, and image assets |
-| CloudFront | Provide HTTPS, caching, and global delivery |
-| Lambda | Backend logic for the visitor counter |
-| API Gateway | Public endpoint to trigger Lambda |
-| DynamoDB | Store visitor count data |
-| IAM | Manage access control using least privilege |
-| CloudWatch | Log and monitor system activity |
-| CloudTrail | Capture audit logs for governance and visibility |
-
----
-
-## Deliverables
-
-- Functional front-end site (art galleries + professional page)
-- Working visitor counter (Lambda + DynamoDB)
-- Infrastructure-as-Code template for backend services
-- CI/CD pipeline via GitHub Actions
-- Security and GRC documentation with control mapping
+- Build a **secure, modern, minimalist portfolio website** hosted fully on AWS.  
+- Prioritize **artwork presentation**, with a dedicated **professional resume** page.
+- Implement the **Cloud Resume Challenge visitor counter** using Lambda, API Gateway, and DynamoDB.
+- Apply **GRC and cloud security best practices**, including:
+  - OAC (Origin Access Control)
+  - Private S3 bucket (no public access)
+  - Strict Content Security Policy (CSP)
+  - GuardDuty for passive threat detection
+  - CloudFront security headers
+- Ensure site is fully **responsive**, gallery‑oriented, and optimized for mobile and dark mode.
+- Document architecture, operations, and lessons learned in version-controlled Markdown.
+- Prepare for eventual **Terraform IaC** and **GitHub‑based CI/CD** pipeline.
 
 ---
 
-## Week-by-Week Progress
+## 2. Final AWS Architecture
 
-### Week 1
-- Defined architecture and services.
-- Created diagram and project folder structure.
-- Drafted this plan and initial GRC considerations.
+### **Frontend Stack**
+- **Amazon S3** (private)
+  - Stores all HTML, CSS, JS, and images  
+  - No public access; only CloudFront via OAC
 
-### Week 2
-- Built and tested HTML/CSS locally.
-- Set up Lambda, DynamoDB, and API Gateway.
-- Deployed S3 + CloudFront stack and tested delivery.
+- **Amazon CloudFront**
+  - CDN + TLS termination
+  - HTTPS enforced
+  - Response headers for security (HSTS, CSP, permissions policy, referrer policy)
+  - Geo‑restriction allowlist
+  - Custom error routing and caching rules
 
-### Week 3 (Planned)
-- Connect visitor counter API.
-- Finalize CI/CD integration.
-- Begin documenting CRC requirement mapping in `/docs/site-implementation.md`.
+- **AWS Certificate Manager**
+  - Certificates for joelflood.com + www
+
+- **Route 53**
+  - Apex and www aliases to CloudFront  
+  - **DNSSEC disabled** due to resolver instability during testing
+
+### **Backend (CRC Requirement)**
+
+- **API Gateway**
+  - HTTPS endpoint for visitor counter
+  - CORS restricted to joelflood.com
+
+- **AWS Lambda**
+  - Atomic counter logic
+  - Logs to CloudWatch
+
+- **DynamoDB**
+  - PK: site_visitors  
+  - Stores integer visitor count  
+  - PITR (point‑in‑time recovery) enabled
+
+### **Monitoring & Security**
+
+- **Amazon GuardDuty**
+  - Account-wide threat detection  
+  - No impact on site availability
+
+- **CloudWatch**
+  - Tracks Lambda execution
+  - API Gateway call logs
+
+- **CloudTrail**
+  - Full API-level audit logs
+
+- **CloudFront Security Headers**
+  - Enforced through CloudFront, not inline
+  - Strict CSP to prevent XSS or inline script use
 
 ---
 
-## Notes
+## 3. Frontend Implementation Summary
 
-- The project is designed to remain within the AWS Free Tier using S3, CloudFront, Lambda, DynamoDB, and API Gateway. Some additional service may incur nominal costs, like Route 53 DNS routing. 
-- Each service is configured with **encryption, logging, and least-privilege IAM roles** for security and compliance.
+### **Site Structure**
+
+```
+resume-site/
+├── index.html
+├── professional.html
+├── about.html
+├── 1990s.html
+├── 2000s.html
+├── 2010s.html
+├── 2020s.html
+├── digital-media.html
+├── assets/
+│   ├── css/style.css
+│   ├── js/main.js
+│   └── images/
+└── robots.txt
+└── sitemap.xml
+```
+
+### **UX and Styling**
+
+- Clean, minimal design using **Inter** font  
+- Responsive gallery grids emphasizing artwork  
+- Custom Lightbox (CSP‑compliant, no external scripts)  
+- Mobile navigation using external JS  
+- Resume page printed cleanly onto a single page  
+- Visitor counter added to resume footer
+
+### **Visitor Counter Frontend Integration**
+
+Performed using external JavaScript and fetch() API:
+
+```javascript
+fetch('https://api.joelflood.com/visitors')
+  .then(res => res.json())
+  .then(data => {
+    const el = document.getElementById('visitor-counter');
+    if (el) el.textContent = `Visitors: ${data.count}`;
+  })
+  .catch(() => {
+    const el = document.getElementById('visitor-counter');
+    if (el) el.textContent = 'Visitors: n/a';
+  });
+```
+
+---
+
+## 4. CRC Deliverables (Completed)
+
+| Requirement | Status | Implementation |
+|------------|--------|----------------|
+| Static website | ✅ | Hosted privately in S3, delivered via CloudFront |
+| HTTPS | ✅ | ACM + CloudFront |
+| DNS | ✅ | Route 53 with apex + www aliases |
+| Visitor counter | ✅ | Lambda + DynamoDB + API Gateway |
+| JavaScript call to API | ✅ | External JS with CSP compliance |
+| CI/CD | ⏳ Planned | GitHub Actions deployment |
+| IaC | ⏳ Planned | Terraform rebuild |
+| Extra security | ⭐ | OAC, CSP, HSTS, GuardDuty, geo restriction |
+
+---
+
+## 5. Project Timeline (Updated)
+
+### **Week 1**
+- Architecture planning  
+- HTML/CSS prototype  
+- Initial CRC plan and diagrams  
+
+### **Week 2**
+- Built backend components (Lambda, API Gateway, DynamoDB)  
+- Migrated site to S3 + CloudFront  
+- Hardened CloudFront with CSP and security headers  
+- Debugged DNSSEC failures → disabled DNSSEC  
+
+### **Week 3**
+- Integrated visitor counter  
+- Tuned CSP (fonts, API calls, lightbox images)  
+- Adjusted geo restrictions  
+- Improved Lightbox + responsive galleries  
+
+### **Future**
+- Add CI/CD automation  
+- Terraform IaC build  
+- Lighthouse performance automation  
+- Additional portfolio sections  
+
+---
+
+## 6. Security Posture Summary
+
+### **Implemented**
+- Private S3 bucket with OAC  
+- Strict CSP (no inline JS)  
+- HSTS (preload format)  
+- Referrer-Policy  
+- Permissions-Policy  
+- GuardDuty enabled  
+- CloudTrail logging  
+- CloudWatch monitoring  
+- Geo-restriction  
+- API CORS locked down  
+
+### **Benefit**
+Provides cloud-native defense in depth, strong browser security posture, and clean audit trails.
+
+---
+
+## 7. Backups & Reliability
+
+- S3 versioning enabled to retain prior versions of site assets; older versions transition to Glacier Deep Archive automatically.
+- DynamoDB PITR enabled for the visitor counter table to allow point-in-time restores.
+- GitHub provides full revision history for code and content.
+
+Simple, low-maintenance controls that align with the lightweight nature of the project.
+
+---
+
+## 8. Next Steps (Possible future items)
+
+- Full Terraform IaC implementation  
+- Complete GitHub Actions CI/CD pipeline  
+- Add AWS WAF Managed Rules  
+- Enhance functionality around gallery metadata  
+- Expand the professional GRC documentation  
+
+---
