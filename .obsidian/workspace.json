@@ -1,0 +1,221 @@
+{
+  "main": {
+    "id": "ce04de4d16c35c0f",
+    "type": "split",
+    "children": [
+      {
+        "id": "864dfe1eb965aba6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "33960cd8921c4cdd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "README"
+            }
+          },
+          {
+            "id": "d9982d8060730961",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "crc-plan.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "crc-plan"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "64b3eb98932f4cc5",
+    "type": "split",
+    "children": [
+      {
+        "id": "5fc1d5f389db6668",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5091df32dd9d0612",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "2d0bce1634fc8d93",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "050045e112870112",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 312.5
+  },
+  "right": {
+    "id": "087c0613e6f564e5",
+    "type": "split",
+    "children": [
+      {
+        "id": "502d97b4e65ebddd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d926b4a406f32a90",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "crc-plan.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for crc-plan"
+            }
+          },
+          {
+            "id": "3e468b53def946e3",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "crc-plan.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from crc-plan"
+            }
+          },
+          {
+            "id": "424c1e58c6017128",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "5971bd4cdc48ebc7",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "f7cc20618a6b2008",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "crc-plan.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of crc-plan"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "d9982d8060730961",
+  "lastOpenFiles": [
+    "Pasted image 20251128131900.png",
+    "crc-plan.md",
+    "README.md",
+    "resume-site/images/images-not-uploaded-to-Github.txt",
+    "resume-site/sitemap.xml",
+    "resume-site/robots.txt",
+    "resume-site/images",
+    "resume-site/untitled folder",
+    "resume-site/css/style.css",
+    "resume-site/css",
+    "resume-site/js/main.js",
+    "resume-site/js",
+    "resume-site/favicon-16.png",
+    "resume-site/favicon-32.png",
+    "resume-site/favicon.ico",
+    "docs/site-implementation.md",
+    "Pasted image 20251128131854.png"
+  ]
+}
