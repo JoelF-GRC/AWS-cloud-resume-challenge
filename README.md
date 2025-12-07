@@ -1,4 +1,4 @@
-# AWS Cloud Resume Challenge – Art & Professional Portfolio
+# AWS Cloud Resume Challenge - Art & Professional Portfolio
 
 This project is my implementation of the **AWS Cloud Resume Challenge**, adapted into a personal website that combines an art portfolio with a professional resume page.  
 The goal is to demonstrate end-to-end use of AWS cloud services while creating something personal, creative, technically sound, and security-minded.
@@ -13,7 +13,7 @@ The site consists of:
 - **Art portfolio pages** organized by decade (1990s–2020s) and medium.
 - A **Professional** page that includes my resume and links to LinkedIn and GitHub.
 - A **serverless visitor counter** using Lambda, DynamoDB, and API Gateway.
-- **CI/CD automation** for continuous deployment.
+- **CI/CD automation** for continuous deployment (future state).
 - Documentation that ties technical implementation to **security and GRC principles**.
 - Implementation of security controls including geo-blocking and enhanced security-header settings in CloudFront.
 
